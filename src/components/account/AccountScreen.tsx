@@ -59,7 +59,16 @@ export const AccountScreen: React.FC = () => {
         {/* 1. Companion Avatar Banner & Customizer */}
         <div
           onClick={() => setShowAvatarModal(true)}
-          className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex items-center justify-between cursor-pointer hover:border-emerald-500/50 transition"
+          className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d-press flex items-center justify-between cursor-pointer"
+          role="button"
+          tabIndex={0}
+          aria-label="Customize avatar and unlocked items"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setShowAvatarModal(true);
+            }
+          }}
         >
           <div className="flex items-center gap-3.5">
             <AndroidifyAvatar
@@ -87,7 +96,7 @@ export const AccountScreen: React.FC = () => {
 
         {/* 2. All-Time Statistics (Detailed numbers & written summaries, NO charts/graphs) */}
         {/* Rule: "Statistics are detailed but use numbers and written summaries—no charts/graphs and no date-range picker. Show all-time statistics only." */}
-        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs space-y-3">
+        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d space-y-3">
           <div className="flex items-center gap-2">
             <BarChart2 size={16} className="text-emerald-600 dark:text-emerald-400" />
             <span className="text-xs font-extrabold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
@@ -97,42 +106,42 @@ export const AccountScreen: React.FC = () => {
 
           {/* Numbers Grid */}
           <div className="grid grid-cols-2 gap-2 text-xs">
-            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 border border-zinc-100 dark:border-zinc-800">
+            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 tile-3d-press">
               <span className="text-zinc-400 text-[11px] font-bold block mb-0.5">Habits Completed</span>
               <span className="text-lg font-black text-zinc-900 dark:text-zinc-100">
                 {stats.totalHabitsCompleted}
               </span>
             </div>
 
-            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 border border-zinc-100 dark:border-zinc-800">
+            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 tile-3d-press">
               <span className="text-zinc-400 text-[11px] font-bold block mb-0.5">Active Days Completed</span>
               <span className="text-lg font-black text-zinc-900 dark:text-zinc-100">
                 {stats.totalDaysCompleted}
               </span>
             </div>
 
-            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 border border-zinc-100 dark:border-zinc-800">
+            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 tile-3d-press">
               <span className="text-zinc-400 text-[11px] font-bold block mb-0.5">Overall Completion Rate</span>
               <span className="text-lg font-black text-emerald-600 dark:text-emerald-400">
                 {stats.overallCompletionRate}%
               </span>
             </div>
 
-            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 border border-zinc-100 dark:border-zinc-800">
+            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 tile-3d-press">
               <span className="text-zinc-400 text-[11px] font-bold block mb-0.5">Best Overall Streak</span>
               <span className="text-lg font-black text-amber-600 dark:text-amber-400">
                 {stats.bestOverallStreak} days
               </span>
             </div>
 
-            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 border border-zinc-100 dark:border-zinc-800">
+            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 tile-3d-press">
               <span className="text-zinc-400 text-[11px] font-bold block mb-0.5">Total XP Earned</span>
               <span className="text-lg font-black text-emerald-600 dark:text-emerald-400">
                 +{stats.totalXpEarned} XP
               </span>
             </div>
 
-            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 border border-zinc-100 dark:border-zinc-800">
+            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 tile-3d-press">
               <span className="text-zinc-400 text-[11px] font-bold block mb-0.5">Goals Completed</span>
               <span className="text-lg font-black text-purple-600 dark:text-purple-400">
                 {stats.goalsCompleted}
@@ -141,7 +150,7 @@ export const AccountScreen: React.FC = () => {
           </div>
 
           {stats.totalExtraTargetProgress > 0 && (
-            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 border border-zinc-100 dark:border-zinc-800 flex items-center justify-between text-xs">
+            <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/70 tile-3d-press flex items-center justify-between text-xs">
               <span className="text-zinc-500 dark:text-zinc-400 font-medium">Extra Target Progress Logged:</span>
               <span className="font-extrabold text-zinc-900 dark:text-zinc-100">+{stats.totalExtraTargetProgress} units</span>
             </div>
@@ -174,7 +183,7 @@ export const AccountScreen: React.FC = () => {
         </div>
 
         {/* 3. Streaks & Streak Freezes */}
-        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs space-y-3">
+        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d space-y-3">
           <div className="flex items-center gap-2">
             <Shield size={16} className="text-sky-600 dark:text-sky-400" />
             <span className="text-xs font-extrabold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
@@ -182,7 +191,7 @@ export const AccountScreen: React.FC = () => {
             </span>
           </div>
 
-          <div className="flex items-center justify-between p-3 rounded-2xl bg-sky-50 dark:bg-sky-950/40 border border-sky-200/60 dark:border-sky-800/60">
+          <div className="flex items-center justify-between p-3.5 rounded-2xl bg-sky-50 dark:bg-sky-950/40 tile-3d-press border border-sky-200/60 dark:border-sky-800/60">
             <div>
               <div className="text-xs font-bold text-sky-900 dark:text-sky-200">
                 Available Freezes: {profile.freezeBalance}
@@ -223,7 +232,7 @@ export const AccountScreen: React.FC = () => {
 
         {/* 4. Appearance (Light and Dark modes only, no "follow system") */}
         {/* Rule: "Support Light and Dark modes only; do not add 'follow system' in V1." */}
-        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex items-center justify-between">
+        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d flex items-center justify-between">
           <div>
             <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
               Appearance Theme
@@ -233,12 +242,12 @@ export const AccountScreen: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex rounded-xl bg-zinc-100 dark:bg-zinc-800 p-1">
+          <div className="flex rounded-xl bg-zinc-100 dark:bg-zinc-800 p-1 gap-1">
             <button
               onClick={() => setTheme('light')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition ${
                 profile.theme === 'light'
-                  ? 'bg-white text-zinc-900 shadow-2xs'
+                  ? 'tile-3d-press bg-white text-zinc-900'
                   : 'text-zinc-500 hover:text-zinc-800'
               }`}
             >
@@ -249,7 +258,7 @@ export const AccountScreen: React.FC = () => {
               onClick={() => setTheme('dark')}
               className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition ${
                 profile.theme === 'dark'
-                  ? 'bg-zinc-700 text-white shadow-2xs'
+                  ? 'tile-3d-press bg-zinc-700 text-white'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
@@ -260,7 +269,7 @@ export const AccountScreen: React.FC = () => {
         </div>
 
         {/* 5. Notifications & Reminders Info */}
-        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs space-y-2">
+        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d space-y-2">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2.5 pr-3">
               <Bell size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
@@ -289,10 +298,19 @@ export const AccountScreen: React.FC = () => {
         {/* 6. Archived Items Entry */}
         <div
           onClick={() => setShowArchivedModal(true)}
-          className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs flex items-center justify-between cursor-pointer hover:border-emerald-500/50 transition"
+          className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d-press flex items-center justify-between cursor-pointer"
+          role="button"
+          tabIndex={0}
+          aria-label="View archived habits and goals"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setShowArchivedModal(true);
+            }
+          }}
         >
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-2xl bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500">
+            <div className="w-9 h-9 rounded-2xl tile-3d-press bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center text-zinc-500">
               <Archive size={16} />
             </div>
             <div>
@@ -309,7 +327,7 @@ export const AccountScreen: React.FC = () => {
 
         {/* 7. Data & Automatic Local Backup */}
         {/* Rule: "Create automatic local backups only. Do not create a manual export/import or recovery flow in V1. V1 does not promise recovery after uninstall or phone change. Make no cloud/reinstall recovery claim." */}
-        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs space-y-2">
+        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d space-y-2">
           <div className="flex items-center gap-2">
             <HardDrive size={16} className="text-emerald-600 dark:text-emerald-400" />
             <span className="text-xs font-extrabold uppercase tracking-wider text-zinc-900 dark:text-zinc-100">
@@ -321,7 +339,7 @@ export const AccountScreen: React.FC = () => {
             HabitFlow operates 100% locally and offline. All your habit records, goals, streaks, and companion customizations are securely stored directly on this device.
           </p>
 
-          <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 border border-zinc-100 dark:border-zinc-800 text-[11px] text-zinc-500 dark:text-zinc-400 space-y-1">
+          <div className="p-3 rounded-2xl bg-zinc-50 dark:bg-zinc-800/60 tile-3d-press text-[11px] text-zinc-500 dark:text-zinc-400 space-y-1">
             <div className="flex justify-between">
               <span>Automatic Local Backup:</span>
               <span className="font-bold text-emerald-600 dark:text-emerald-400">Active &bull; {backupMeta.status.toUpperCase()}</span>
@@ -339,7 +357,7 @@ export const AccountScreen: React.FC = () => {
 
         {/* 8. About Section */}
         {/* Rule: "About contains only app version and a short description. No 'Reset all data' option in V1." */}
-        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs text-center space-y-1.5">
+        <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d text-center space-y-1.5">
           <div className="text-xs font-black text-zinc-900 dark:text-zinc-100">
             HabitFlow V1.0.0
           </div>

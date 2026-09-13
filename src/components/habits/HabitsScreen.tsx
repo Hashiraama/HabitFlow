@@ -90,10 +90,10 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
     return (
       <div
         key={habit.id}
-        className={`rounded-2xl transition border ${
+        className={`rounded-2xl transition box-3d-press ${
           isCompleted
-            ? 'bg-emerald-50/40 dark:bg-emerald-950/20 border-emerald-200 dark:border-emerald-800/50'
-            : 'bg-white dark:bg-zinc-900 border-zinc-200/80 dark:border-zinc-800 shadow-2xs'
+            ? 'bg-emerald-50/50 dark:bg-emerald-950/25 border-emerald-300 dark:border-emerald-800/60'
+            : 'bg-white dark:bg-zinc-900'
         } p-3.5 space-y-2.5`}
       >
         <div className="flex items-center justify-between gap-3">
@@ -102,9 +102,9 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
             className="flex items-center gap-3 flex-1 min-w-0 cursor-pointer"
             onClick={() => setSelectedHabitId(habit.id)}
           >
-            {/* Color Accent Pill */}
+            {/* Color Accent Pill with subtle 3D highlight */}
             <div
-              className="w-2.5 h-10 rounded-full shrink-0 shadow-2xs"
+              className="w-2.5 h-10 rounded-full shrink-0 shadow-xs ring-1 ring-black/5"
               style={{ backgroundColor: habit.color }}
             />
 
@@ -163,20 +163,24 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
           <div className="flex items-center gap-2 shrink-0">
             {/* If target habit: quick stepper or manual set button */}
             {habit.type === 'target' && (
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1.5">
                 <button
-                  onClick={() => recordTargetProgress(habit.id, 'add', 1, todayDate)}
-                  className="px-2 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-xs font-bold text-zinc-700 dark:text-zinc-300 transition active:scale-95"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    recordTargetProgress(habit.id, 'add', 1, todayDate);
+                  }}
+                  className="px-2.5 py-1 rounded-lg tile-3d-press bg-zinc-100 dark:bg-zinc-800 text-xs font-bold text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 transition"
                   title="Add +1 unit"
                 >
                   +1
                 </button>
                 <button
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setActiveStepperHabitId(isStepperOpen ? null : habit.id);
                     setCustomInputValue(String(progressAmount));
                   }}
-                  className="px-2 py-1 rounded-lg bg-zinc-100 dark:bg-zinc-800 hover:bg-zinc-200 dark:hover:bg-zinc-700 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400 transition active:scale-95"
+                  className="px-2.5 py-1 rounded-lg tile-3d-press bg-zinc-100 dark:bg-zinc-800 text-[11px] font-bold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 transition"
                   title="Set exact amount or custom progress"
                 >
                   Edit
@@ -187,11 +191,14 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
             {/* Manual Completion Checkmark */}
             {/* Rule: "Reaching the target does not auto-complete the habit. The user must tap the completion checkmark." */}
             <button
-              onClick={() => toggleHabitCompletion(habit.id, todayDate)}
-              className={`w-9 h-9 rounded-xl flex items-center justify-center transition active:scale-90 cursor-pointer ${
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleHabitCompletion(habit.id, todayDate);
+              }}
+              className={`w-9 h-9 rounded-xl flex items-center justify-center transition cursor-pointer ${
                 isCompleted
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'border-2 border-zinc-300 dark:border-zinc-700 text-transparent hover:border-emerald-500'
+                  ? 'tile-3d-emerald bg-emerald-600 text-white'
+                  : 'tile-3d-press bg-white dark:bg-zinc-800 border border-zinc-300 dark:border-zinc-700 text-transparent hover:border-emerald-500'
               }`}
               aria-label={`Mark ${habit.name} complete`}
             >
@@ -272,40 +279,40 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
                 return (
                   <div
                     key={goal.id}
-                    className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs space-y-3"
+                    className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d space-y-3"
                   >
-                    {/* Goal Title Header */}
+                    {/* Goal Title Header with tactile press */}
                     <div
-                      className="flex items-center justify-between cursor-pointer"
+                      className="flex items-center justify-between cursor-pointer p-2 -m-2 rounded-2xl transition hover:bg-zinc-50 dark:hover:bg-zinc-800/50 active:scale-[0.99] active:translate-y-[1px]"
                       onClick={() => setSelectedGoalId(goal.id)}
                     >
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-2.5">
                         <span
-                          className="w-3.5 h-3.5 rounded-full"
+                          className="w-4 h-4 rounded-full shrink-0 shadow-xs ring-1 ring-black/10"
                           style={{ backgroundColor: goal.color }}
                         />
                         <div>
-                          <div className="text-sm font-extrabold text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 transition">
+                          <div className="text-sm font-black text-zinc-900 dark:text-zinc-100 hover:text-emerald-600 transition">
                             {goal.name}
                           </div>
-                          <div className="text-[11px] text-zinc-400">
+                          <div className="text-[11px] font-semibold text-zinc-400">
                             {linkedHabits.length} sub-habits linked &bull; {progress.percent}% overall
                           </div>
                         </div>
                       </div>
-                      <ChevronRight size={16} className="text-zinc-400" />
+                      <ChevronRight size={18} className="text-zinc-400" />
                     </div>
 
-                    {/* Progress Bar */}
-                    <div className="w-full h-2 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden">
+                    {/* Progress Bar with 3D track */}
+                    <div className="w-full h-2.5 rounded-full bg-zinc-100 dark:bg-zinc-800 overflow-hidden shadow-inner">
                       <div
-                        className="h-full bg-emerald-500 rounded-full transition-all duration-500"
+                        className="h-full bg-emerald-500 rounded-full transition-all duration-500 shadow-xs"
                         style={{ width: `${progress.percent}%` }}
                       />
                     </div>
 
                     {/* Sub-habits list under this goal */}
-                    <div className="space-y-2 pt-1 border-t border-zinc-100 dark:border-zinc-800/80">
+                    <div className="space-y-2.5 pt-1.5 border-t border-zinc-100 dark:border-zinc-800/80">
                       {linkedHabits.length === 0 ? (
                         <div className="text-xs text-zinc-400 py-1">
                           No habits scheduled today for this goal.
@@ -330,8 +337,8 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
           </div>
 
           {standaloneHabits.length === 0 && activeGoals.length === 0 ? (
-            <div className="p-8 text-center bg-white dark:bg-zinc-900 rounded-3xl border border-dashed border-zinc-300 dark:border-zinc-800 space-y-3">
-              <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto">
+            <div className="p-8 text-center bg-white dark:bg-zinc-900 rounded-3xl box-3d space-y-3">
+              <div className="w-12 h-12 rounded-2xl bg-emerald-100 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto shadow-xs">
                 <Target size={24} />
               </div>
               <div>
@@ -344,7 +351,7 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
               </div>
               <button
                 onClick={onOpenCreateModal}
-                className="py-2 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs shadow-xs transition"
+                className="py-2 px-4 rounded-xl tile-3d-emerald bg-emerald-600 text-white font-bold text-xs shadow-xs"
               >
                 Create Habit
               </button>

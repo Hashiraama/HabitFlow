@@ -87,7 +87,7 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
                       setShowFabMenu(false);
                       onOpenCreateGoal();
                     }}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 dark:bg-zinc-800/95 backdrop-blur-md text-zinc-800 dark:text-zinc-100 font-bold text-xs shadow-xl border border-zinc-200/70 dark:border-zinc-700/70 active:scale-95 transition-all duration-150"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 font-bold text-xs box-3d-press"
                   >
                     <Target size={16} className="text-emerald-500" />
                     <span>New Big Goal</span>
@@ -98,7 +98,7 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
                       setShowFabMenu(false);
                       onOpenCreateHabit();
                     }}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 dark:bg-zinc-800/95 backdrop-blur-md text-zinc-800 dark:text-zinc-100 font-bold text-xs shadow-xl border border-zinc-200/70 dark:border-zinc-700/70 active:scale-95 transition-all duration-150"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 font-bold text-xs box-3d-press"
                   >
                     <Sparkles size={16} className="text-emerald-500" />
                     <span>New Habit</span>
@@ -109,7 +109,7 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
 
             <button
               onClick={() => setShowFabMenu(prev => !prev)}
-              className="w-14 h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white shadow-xl shadow-emerald-600/30 flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer"
+              className="w-14 h-14 rounded-2xl tile-3d-emerald bg-emerald-600 text-white flex items-center justify-center cursor-pointer"
               aria-label="Create new habit or goal"
             >
               <Plus
