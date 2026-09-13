@@ -21,6 +21,7 @@ import { useHabitFlow } from '../../context/HabitFlowContext';
 import { AndroidifyAvatar } from '../companion/AndroidifyAvatar';
 import { AvatarCustomizerModal } from './AvatarCustomizerModal';
 import { ArchivedItemsModal } from './ArchivedItemsModal';
+import { IOSSwitch } from '../common/IOSSwitch';
 import { formatFriendlyDate } from '../../utils/dateUtils';
 import { getLevelInfo } from '../../utils/xpProgression';
 
@@ -198,7 +199,7 @@ export const AccountScreen: React.FC = () => {
           {/* Automatic freeze toggle */}
           {/* Rule: "Automatic freeze use is available, but users can toggle it on/off in settings. With automatic use on, apply a freeze automatically when needed. With it off, give the user 24 hours after a missed day to manually use one." */}
           <div className="flex items-center justify-between pt-1">
-            <div>
+            <div className="pr-4">
               <div className="text-xs font-bold text-zinc-800 dark:text-zinc-200">
                 Automatic Streak Protection
               </div>
@@ -208,20 +209,11 @@ export const AccountScreen: React.FC = () => {
                   : 'Manual mode: Gives you 24 hours to review and apply a freeze.'}
               </div>
             </div>
-            <button
-              onClick={toggleAutoFreeze}
-              className={`w-12 h-6.5 rounded-full transition-colors relative cursor-pointer ${
-                profile.autoFreeze ? 'bg-emerald-600' : 'bg-zinc-300 dark:bg-zinc-700'
-              }`}
-              role="switch"
-              aria-checked={profile.autoFreeze}
-            >
-              <div
-                className={`w-5 h-5 rounded-full bg-white shadow-xs absolute top-0.5 transition-transform ${
-                  profile.autoFreeze ? 'right-1' : 'left-1'
-                }`}
-              />
-            </button>
+            <IOSSwitch
+              checked={profile.autoFreeze}
+              onChange={toggleAutoFreeze}
+              ariaLabel="Automatic Streak Protection"
+            />
           </div>
 
           <p className="text-[10px] text-zinc-400 leading-normal pt-1">
@@ -270,8 +262,8 @@ export const AccountScreen: React.FC = () => {
         {/* 5. Notifications & Reminders Info */}
         <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-xs space-y-2">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Bell size={16} className="text-emerald-600 dark:text-emerald-400" />
+            <div className="flex items-center gap-2.5 pr-3">
+              <Bell size={16} className="text-emerald-600 dark:text-emerald-400 shrink-0" />
               <div>
                 <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
                   Daily Habit Reminders
@@ -282,20 +274,11 @@ export const AccountScreen: React.FC = () => {
               </div>
             </div>
 
-            <button
-              onClick={() => setNotificationsEnabled(!profile.notificationsEnabled)}
-              className={`w-12 h-6.5 rounded-full transition-colors relative cursor-pointer ${
-                profile.notificationsEnabled ? 'bg-emerald-600' : 'bg-zinc-300 dark:bg-zinc-700'
-              }`}
-              role="switch"
-              aria-checked={profile.notificationsEnabled}
-            >
-              <div
-                className={`w-5 h-5 rounded-full bg-white shadow-xs absolute top-0.5 transition-transform ${
-                  profile.notificationsEnabled ? 'right-1' : 'left-1'
-                }`}
-              />
-            </button>
+            <IOSSwitch
+              checked={profile.notificationsEnabled}
+              onChange={(val) => setNotificationsEnabled(val)}
+              ariaLabel="Daily Habit Reminders"
+            />
           </div>
 
           <p className="text-[11px] text-zinc-500 dark:text-zinc-400 pt-1 leading-snug">

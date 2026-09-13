@@ -64,8 +64,8 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
           </div>
         )}
 
-        {/* Main Screen Viewport with smooth scroll */}
-        <div className="flex-1 overflow-y-auto overflow-x-hidden relative flex flex-col">
+        {/* Main Screen Viewport with smooth iOS momentum scroll and zero visible scrollbars */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden relative flex flex-col no-scrollbar [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden ios-scroll">
           {children}
         </div>
 
@@ -76,9 +76,10 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
             <AnimatePresence>
               {showFabMenu && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8, y: 10 }}
+                  initial={{ opacity: 0, scale: 0.85, y: 12 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, y: 10 }}
+                  exit={{ opacity: 0, scale: 0.85, y: 12 }}
+                  transition={{ type: "spring", stiffness: 450, damping: 30 }}
                   className="mb-2 flex flex-col items-end gap-2"
                 >
                   <button
@@ -86,9 +87,9 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
                       setShowFabMenu(false);
                       onOpenCreateGoal();
                     }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 font-bold text-xs shadow-lg border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 active:scale-95 transition"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 dark:bg-zinc-800/95 backdrop-blur-md text-zinc-800 dark:text-zinc-100 font-bold text-xs shadow-xl border border-zinc-200/70 dark:border-zinc-700/70 active:scale-95 transition-all duration-150"
                   >
-                    <Target size={15} className="text-emerald-500" />
+                    <Target size={16} className="text-emerald-500" />
                     <span>New Big Goal</span>
                   </button>
 
@@ -97,9 +98,9 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
                       setShowFabMenu(false);
                       onOpenCreateHabit();
                     }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-2xl bg-white dark:bg-zinc-800 text-zinc-800 dark:text-zinc-100 font-bold text-xs shadow-lg border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-50 active:scale-95 transition"
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-2xl bg-white/95 dark:bg-zinc-800/95 backdrop-blur-md text-zinc-800 dark:text-zinc-100 font-bold text-xs shadow-xl border border-zinc-200/70 dark:border-zinc-700/70 active:scale-95 transition-all duration-150"
                   >
-                    <Sparkles size={15} className="text-emerald-500" />
+                    <Sparkles size={16} className="text-emerald-500" />
                     <span>New Habit</span>
                   </button>
                 </motion.div>
@@ -108,72 +109,93 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
 
             <button
               onClick={() => setShowFabMenu(prev => !prev)}
-              className="w-14 h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white shadow-xl flex items-center justify-center transition-all duration-200 active:scale-95 cursor-pointer"
+              className="w-14 h-14 rounded-2xl bg-emerald-600 hover:bg-emerald-500 active:bg-emerald-700 text-white shadow-xl shadow-emerald-600/30 flex items-center justify-center transition-all duration-200 active:scale-90 cursor-pointer"
               aria-label="Create new habit or goal"
             >
               <Plus
                 size={26}
-                className={`transition-transform duration-200 ${showFabMenu ? 'rotate-45' : ''}`}
+                className={`transition-transform duration-250 ease-out ${showFabMenu ? 'rotate-45' : ''}`}
               />
             </button>
           </div>
         )}
 
-        {/* Bottom Navigation Bar */}
+        {/* Bottom Navigation Bar - Telegram / iOS Fluid Frosted Glass */}
         {/* Rule: "Use a bottom navigation bar with exactly these top-level destinations: 1. Home, 2. Habits, 3. Account / Settings" */}
         <nav
-          className="h-18 px-6 bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md border-t border-zinc-200/80 dark:border-zinc-800 flex items-center justify-around shrink-0 z-20 select-none pb-2"
+          className="h-18 px-5 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-2xl border-t border-zinc-200/60 dark:border-zinc-800/60 flex items-center justify-around shrink-0 z-20 select-none pb-1.5"
           aria-label="Bottom Navigation"
         >
           {/* 1. Home */}
           <button
             onClick={() => onTabChange('home')}
-            className={`flex flex-col items-center gap-1 py-1 px-4 rounded-xl transition cursor-pointer ${
+            className={`relative flex flex-col items-center gap-1 py-1.5 px-4 rounded-2xl transition-all duration-200 active:scale-90 cursor-pointer ${
               currentTab === 'home'
                 ? 'text-emerald-600 dark:text-emerald-400 font-bold'
                 : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 font-medium'
             }`}
           >
-            <div className={`p-1 rounded-xl transition ${currentTab === 'home' ? 'bg-emerald-50 dark:bg-emerald-950/60' : ''}`}>
-              <Home size={20} />
+            {currentTab === 'home' && (
+              <motion.div
+                layoutId="activeTabPill"
+                className="absolute inset-0 bg-emerald-500/10 dark:bg-emerald-400/15 rounded-2xl -z-10"
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
+              />
+            )}
+            <div className="p-1 rounded-xl transition-transform duration-200">
+              <Home size={20} className={currentTab === 'home' ? 'stroke-[2.5px]' : 'stroke-2'} />
             </div>
-            <span className="text-[11px] leading-none">Home</span>
+            <span className="text-[11px] leading-none tracking-tight">Home</span>
           </button>
 
           {/* 2. Habits */}
           <button
             onClick={() => onTabChange('habits')}
-            className={`flex flex-col items-center gap-1 py-1 px-4 rounded-xl transition cursor-pointer ${
+            className={`relative flex flex-col items-center gap-1 py-1.5 px-4 rounded-2xl transition-all duration-200 active:scale-90 cursor-pointer ${
               currentTab === 'habits'
                 ? 'text-emerald-600 dark:text-emerald-400 font-bold'
                 : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 font-medium'
             }`}
           >
-            <div className={`p-1 rounded-xl transition ${currentTab === 'habits' ? 'bg-emerald-50 dark:bg-emerald-950/60' : ''}`}>
-              <CheckSquare size={20} />
+            {currentTab === 'habits' && (
+              <motion.div
+                layoutId="activeTabPill"
+                className="absolute inset-0 bg-emerald-500/10 dark:bg-emerald-400/15 rounded-2xl -z-10"
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
+              />
+            )}
+            <div className="p-1 rounded-xl transition-transform duration-200">
+              <CheckSquare size={20} className={currentTab === 'habits' ? 'stroke-[2.5px]' : 'stroke-2'} />
             </div>
-            <span className="text-[11px] leading-none">Habits</span>
+            <span className="text-[11px] leading-none tracking-tight">Habits</span>
           </button>
 
           {/* 3. Account / Settings */}
           <button
             onClick={() => onTabChange('account')}
-            className={`flex flex-col items-center gap-1 py-1 px-4 rounded-xl transition cursor-pointer ${
+            className={`relative flex flex-col items-center gap-1 py-1.5 px-4 rounded-2xl transition-all duration-200 active:scale-90 cursor-pointer ${
               currentTab === 'account'
                 ? 'text-emerald-600 dark:text-emerald-400 font-bold'
                 : 'text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300 font-medium'
             }`}
           >
-            <div className={`p-1 rounded-xl transition ${currentTab === 'account' ? 'bg-emerald-50 dark:bg-emerald-950/60' : ''}`}>
-              <User size={20} />
+            {currentTab === 'account' && (
+              <motion.div
+                layoutId="activeTabPill"
+                className="absolute inset-0 bg-emerald-500/10 dark:bg-emerald-400/15 rounded-2xl -z-10"
+                transition={{ type: "spring", stiffness: 500, damping: 35 }}
+              />
+            )}
+            <div className="p-1 rounded-xl transition-transform duration-200">
+              <User size={20} className={currentTab === 'account' ? 'stroke-[2.5px]' : 'stroke-2'} />
             </div>
-            <span className="text-[11px] leading-none">Account</span>
+            <span className="text-[11px] leading-none tracking-tight">Account</span>
           </button>
         </nav>
 
         {/* Android Gesture Bar / Home Indicator */}
-        <div className="h-3.5 bg-white/95 dark:bg-zinc-900/95 flex items-center justify-center shrink-0">
-          <div className="w-32 h-1 rounded-full bg-zinc-300 dark:bg-zinc-700" />
+        <div className="h-3.5 bg-white/80 dark:bg-zinc-950/80 backdrop-blur-2xl flex items-center justify-center shrink-0">
+          <div className="w-32 h-1 rounded-full bg-zinc-300/80 dark:bg-zinc-700/80" />
         </div>
       </div>
     </div>

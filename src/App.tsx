@@ -4,6 +4,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { HabitFlowProvider, useHabitFlow } from './context/HabitFlowContext';
 import { AndroidFrame, ScreenTab } from './components/common/AndroidFrame';
 import { HomeScreen } from './components/home/HomeScreen';
@@ -52,31 +53,42 @@ const HabitFlowAppContent: React.FC = () => {
       }}
       onOpenCreateGoal={() => setIsCreateGoalOpen(true)}
     >
-      {/* Active Tab Screen */}
-      {currentTab === 'home' && (
-        <HomeScreen
-          onOpenHabitDetail={(id) => setSelectedHabitId(id)}
-          onOpenCreateModal={() => {
-            setHabitToEdit(null);
-            setIsCreateHabitOpen(true);
-          }}
-          onSelectDate={(dStr) => setSelectedDate(dStr)}
-        />
-      )}
+      {/* Active Tab Screen with iOS/Telegram Fluid Easing */}
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={currentTab}
+          initial={{ opacity: 0, y: 7, scale: 0.99 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          exit={{ opacity: 0, y: -7, scale: 0.99 }}
+          transition={{ duration: 0.18, ease: [0.32, 0.72, 0, 1] }}
+          className="flex-1 flex flex-col w-full"
+        >
+          {currentTab === 'home' && (
+            <HomeScreen
+              onOpenHabitDetail={(id) => setSelectedHabitId(id)}
+              onOpenCreateModal={() => {
+                setHabitToEdit(null);
+                setIsCreateHabitOpen(true);
+              }}
+              onSelectDate={(dStr) => setSelectedDate(dStr)}
+            />
+          )}
 
-      {currentTab === 'habits' && (
-        <HabitsScreen
-          onOpenCreateModal={() => {
-            setHabitToEdit(null);
-            setIsCreateHabitOpen(true);
-          }}
-          onEditHabit={handleOpenEditHabit}
-        />
-      )}
+          {currentTab === 'habits' && (
+            <HabitsScreen
+              onOpenCreateModal={() => {
+                setHabitToEdit(null);
+                setIsCreateHabitOpen(true);
+              }}
+              onEditHabit={handleOpenEditHabit}
+            />
+          )}
 
-      {currentTab === 'account' && (
-        <AccountScreen />
-      )}
+          {currentTab === 'account' && (
+            <AccountScreen />
+          )}
+        </motion.div>
+      </AnimatePresence>
 
       {/* Creation / Edit Modals */}
       <CreateEditHabitModal

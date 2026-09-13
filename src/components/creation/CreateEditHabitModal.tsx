@@ -4,6 +4,7 @@ import { X, Check, Bell, Calendar, Target, Plus, Trash2 } from 'lucide-react';
 import { Habit, HabitType, FrequencyType, Goal } from '../../types';
 import { useHabitFlow } from '../../context/HabitFlowContext';
 import { getTodayDateString, addDays } from '../../utils/dateUtils';
+import { IOSSwitch } from '../common/IOSSwitch';
 
 interface CreateEditHabitModalProps {
   isOpen: boolean;
@@ -149,12 +150,13 @@ export const CreateEditHabitModal: React.FC<CreateEditHabitModalProps> = ({
 
   return (
     <AnimatePresence>
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/60 backdrop-blur-xs">
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/45 backdrop-blur-md">
         <motion.div
-          initial={{ opacity: 0, scale: 0.95, y: 15 }}
+          initial={{ opacity: 0, scale: 0.94, y: 16 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
-          exit={{ opacity: 0, scale: 0.95, y: 15 }}
-          className="relative w-full max-w-md rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
+          exit={{ opacity: 0, scale: 0.94, y: 16 }}
+          transition={{ type: "spring", stiffness: 420, damping: 32 }}
+          className="relative w-full max-w-md rounded-3xl bg-white dark:bg-zinc-900 border border-zinc-200/80 dark:border-zinc-800 shadow-2xl flex flex-col max-h-[90vh] overflow-hidden"
           id="create-edit-habit-dialog"
         >
           {/* Header */}
@@ -164,7 +166,7 @@ export const CreateEditHabitModal: React.FC<CreateEditHabitModalProps> = ({
             </h3>
             <button
               onClick={onClose}
-              className="p-1.5 rounded-full text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition"
+              className="p-1.5 rounded-full text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition active:scale-90"
               aria-label="Close"
             >
               <X size={18} />
@@ -172,7 +174,7 @@ export const CreateEditHabitModal: React.FC<CreateEditHabitModalProps> = ({
           </div>
 
           {/* Form Content */}
-          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-4 space-y-4 text-xs">
+          <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto no-scrollbar ios-scroll p-4 space-y-4 text-xs">
             {/* Name */}
             <div>
               <label className="font-bold text-zinc-700 dark:text-zinc-300 block mb-1">
@@ -411,19 +413,12 @@ export const CreateEditHabitModal: React.FC<CreateEditHabitModalProps> = ({
                   <Bell size={14} className="text-emerald-600 dark:text-emerald-400" />
                   <span>Reminder Notification</span>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => setReminderEnabled(prev => !prev)}
-                  className={`w-10 h-5.5 rounded-full transition-colors relative cursor-pointer ${
-                    reminderEnabled ? 'bg-emerald-600' : 'bg-zinc-300 dark:bg-zinc-700'
-                  }`}
-                >
-                  <div
-                    className={`w-4.5 h-4.5 rounded-full bg-white shadow-xs absolute top-0.5 transition-transform ${
-                      reminderEnabled ? 'right-0.5' : 'left-0.5'
-                    }`}
-                  />
-                </button>
+                <IOSSwitch
+                  checked={reminderEnabled}
+                  onChange={(val) => setReminderEnabled(val)}
+                  size="sm"
+                  ariaLabel="Reminder Notification"
+                />
               </div>
 
               {reminderEnabled && (

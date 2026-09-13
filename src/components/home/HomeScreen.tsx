@@ -267,7 +267,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <div className="flex items-center gap-1">
               <button
                 onClick={handlePrevMonth}
-                className="p-1.5 rounded-full text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition cursor-pointer"
+                className="p-1.5 rounded-full text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-all duration-150 active:scale-90 cursor-pointer"
                 aria-label="Previous month"
               >
                 <ChevronLeft size={20} />
@@ -275,9 +275,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <button
                 onClick={handleNextMonth}
                 disabled={!canGoNext}
-                className={`p-1.5 rounded-full transition ${
+                className={`p-1.5 rounded-full transition-all duration-150 ${
                   canGoNext
-                    ? 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 cursor-pointer'
+                    ? 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 active:scale-90 cursor-pointer'
                     : 'text-zinc-300 dark:text-zinc-700 cursor-not-allowed'
                 }`}
                 aria-label="Next month"
@@ -332,7 +332,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 <button
                   key={cell.dateStr}
                   onClick={() => setSelectedDate(cell.dateStr)}
-                  className={`relative aspect-square rounded-xl flex flex-col items-center justify-between p-1 transition cursor-pointer ${
+                  className={`relative aspect-square rounded-xl flex flex-col items-center justify-between p-1 transition-all duration-150 active:scale-90 cursor-pointer ${
                     !cell.isCurrentMonth
                       ? 'opacity-25'
                       : cell.isFuture
