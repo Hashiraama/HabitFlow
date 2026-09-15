@@ -15,12 +15,14 @@ import {
   CheckCircle2,
   Flame,
   Award,
-  AlertCircle
+  AlertCircle,
+  Smartphone
 } from 'lucide-react';
 import { useHabitFlow } from '../../context/HabitFlowContext';
 import { AndroidifyAvatar } from '../companion/AndroidifyAvatar';
 import { AvatarCustomizerModal } from './AvatarCustomizerModal';
 import { ArchivedItemsModal } from './ArchivedItemsModal';
+import { DeviceInstallModal } from '../common/DeviceInstallModal';
 import { IOSSwitch } from '../common/IOSSwitch';
 import { formatFriendlyDate } from '../../utils/dateUtils';
 import { getLevelInfo } from '../../utils/xpProgression';
@@ -39,6 +41,7 @@ export const AccountScreen: React.FC = () => {
 
   const [showAvatarModal, setShowAvatarModal] = useState(false);
   const [showArchivedModal, setShowArchivedModal] = useState(false);
+  const [showInstallModal, setShowInstallModal] = useState(false);
 
   const stats = calculateAllTimeStats();
   const levelInfo = getLevelInfo(profile.xp);
@@ -56,6 +59,39 @@ export const AccountScreen: React.FC = () => {
       </div>
 
       <div className="p-3 sm:p-4 max-w-lg mx-auto w-full space-y-4">
+        {/* Android Device & APK Download Card */}
+        <div
+          onClick={() => setShowInstallModal(true)}
+          className="p-4 rounded-3xl bg-linear-to-r from-emerald-600 to-teal-700 text-white box-3d-press flex items-center justify-between cursor-pointer shadow-lg"
+          role="button"
+          tabIndex={0}
+          aria-label="Install on Android or download APK"
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              setShowInstallModal(true);
+            }
+          }}
+        >
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shrink-0 shadow-xs">
+              <Smartphone size={22} />
+            </div>
+            <div>
+              <div className="text-[10px] font-black uppercase tracking-wider text-emerald-200">
+                Android Device Testing
+              </div>
+              <h3 className="text-sm font-black text-white leading-tight">
+                Install on Android / APK
+              </h3>
+              <p className="text-[11px] text-emerald-100/90 mt-0.5">
+                Scan QR code, direct WebAPK install & download options
+              </p>
+            </div>
+          </div>
+          <ChevronRight size={18} className="text-emerald-200 shrink-0" />
+        </div>
+
         {/* 1. Companion Avatar Banner & Customizer */}
         <div
           onClick={() => setShowAvatarModal(true)}
@@ -371,6 +407,11 @@ export const AccountScreen: React.FC = () => {
       </div>
 
       {/* Modals */}
+      <DeviceInstallModal
+        isOpen={showInstallModal}
+        onClose={() => setShowInstallModal(false)}
+      />
+
       <AvatarCustomizerModal
         isOpen={showAvatarModal}
         onClose={() => setShowAvatarModal(false)}

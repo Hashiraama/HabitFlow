@@ -10,7 +10,8 @@ import {
   ChevronDown,
   Info,
   CheckCircle2,
-  Clock
+  Clock,
+  Smartphone
 } from 'lucide-react';
 import { useHabitFlow } from '../../context/HabitFlowContext';
 import {
@@ -26,6 +27,7 @@ import {
 import { getLevelInfo } from '../../utils/xpProgression';
 import { CompanionBubble } from '../companion/CompanionBubble';
 import { DateDetailModal } from './DateDetailModal';
+import { DeviceInstallModal } from '../common/DeviceInstallModal';
 
 interface HomeScreenProps {
   onOpenCreateModal: () => void;
@@ -49,6 +51,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   const [currentViewDate, setCurrentViewDate] = useState<Date>(() => parseDateString(todayDate));
   const [showMonthPicker, setShowMonthPicker] = useState(false);
   const [showFullDayModal, setShowFullDayModal] = useState(false);
+  const [showInstallModal, setShowInstallModal] = useState(false);
 
   const viewYear = currentViewDate.getFullYear();
   const viewMonth = currentViewDate.getMonth() + 1; // 1-indexed
@@ -247,6 +250,16 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <Shield size={14} className="fill-sky-500 text-sky-500" />
             <span>{profile.freezeBalance}</span>
           </div>
+
+          {/* Android APK / Install Button */}
+          <button
+            onClick={() => setShowInstallModal(true)}
+            className="flex items-center gap-1 px-2.5 py-1 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-black text-xs tile-3d-press shadow-xs cursor-pointer"
+            title="Install on Android Device / Download APK"
+          >
+            <Smartphone size={13} />
+            <span>APK</span>
+          </button>
         </div>
       </div>
 
@@ -464,6 +477,12 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         onClose={() => setShowFullDayModal(false)}
         dateStr={selectedDate}
         onOpenHabitDetail={onOpenHabitDetail}
+      />
+
+      {/* Device Install & APK Modal */}
+      <DeviceInstallModal
+        isOpen={showInstallModal}
+        onClose={() => setShowInstallModal(false)}
       />
     </div>
   );
