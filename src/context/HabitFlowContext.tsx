@@ -27,6 +27,7 @@ import {
   LevelReward
 } from '../utils/xpProgression';
 import { evaluateCompanionState, CompanionState } from '../utils/companionEngine';
+import { scheduleNativeNotification, requestNativeNotificationPermission } from '../utils/nativeNotifications';
 
 const STORAGE_KEY = 'habitflow_v1_data';
 const BACKUP_KEY = 'habitflow_v1_backup';
@@ -1004,7 +1005,7 @@ export const HabitFlowProvider: React.FC<{ children: React.ReactNode }> = ({ chi
     }
   }, [activeNotifications, toggleHabitCompletion]);
 
-  // Simulate reminder delivery for demonstration / interactive testing
+  // Trigger reminder delivery (in-app banner + native device local notification)
   const simulateReminderTrigger = useCallback((habitId: string) => {
     const habit = habits.find(h => h.id === habitId);
     if (!habit) return;
@@ -1019,6 +1020,13 @@ export const HabitFlowProvider: React.FC<{ children: React.ReactNode }> = ({ chi
       status: 'pending',
     };
     setActiveNotifications(prev => [notif, ...prev.filter(n => n.habitId !== habitId)]);
+
+    // Trigger real native notification
+    scheduleNativeNotification(
+      Math.abs(habitId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)),
+      `HabitFlow Reminder: ${habit.name}`,
+      `Time to complete "${habit.name}" today!`
+    );
   }, [habits, todayDate]);
 
   const dismissNotification = useCallback((id: string) => {
@@ -1036,6 +1044,9 @@ export const HabitFlowProvider: React.FC<{ children: React.ReactNode }> = ({ chi
 
   const setNotificationsEnabled = useCallback((enabled: boolean) => {
     setProfile(prev => ({ ...prev, notificationsEnabled: enabled }));
+    if (enabled) {
+      requestNativeNotificationPermission();
+    }
   }, []);
 
   const equipAvatarItem = useCallback((category: 'skinColor' | 'hat' | 'accessory' | 'outfit', itemId: string) => {
