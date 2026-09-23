@@ -28,12 +28,18 @@ const HabitFlowAppContent: React.FC = () => {
   const [selectedHabitId, setSelectedHabitId] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
 
-  // Sync theme class on document element for dark mode
+  // Sync theme class on document element for dark & OLED black modes
   useEffect(() => {
-    if (profile.theme === 'dark') {
+    if (profile.theme === 'dark' || profile.theme === 'oled') {
       document.documentElement.classList.add('dark');
     } else {
       document.documentElement.classList.remove('dark');
+    }
+
+    if (profile.theme === 'oled') {
+      document.documentElement.classList.add('oled');
+    } else {
+      document.documentElement.classList.remove('oled');
     }
   }, [profile.theme]);
 

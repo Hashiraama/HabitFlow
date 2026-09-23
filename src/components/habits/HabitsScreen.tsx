@@ -18,6 +18,7 @@ import { Habit, Goal, DailyRecord } from '../../types';
 import { isHabitDueOnDate } from '../../utils/dateUtils';
 import { HabitDetailModal } from './HabitDetailModal';
 import { GoalDetailModal } from './GoalDetailModal';
+import { triggerSuccessHaptic, triggerLightHaptic } from '../../utils/haptics';
 
 interface HabitsScreenProps {
   onOpenCreateModal: () => void;
@@ -88,13 +89,26 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
     const isStepperOpen = activeStepperHabitId === habit.id;
 
     return (
-      <div
+      <motion.div
         key={habit.id}
+        layoutId={`habit-row-${habit.id}`}
+        drag="x"
+        dragConstraints={{ left: -60, right: 100 }}
+        dragSnapToOrigin
+        onDragEnd={(_, info) => {
+          if (info.offset.x > 80 && !isCompleted) {
+            triggerSuccessHaptic();
+            toggleHabitCompletion(habit.id, todayDate);
+          } else if (info.offset.x < -50) {
+            triggerLightHaptic();
+            onEditHabit(habit);
+          }
+        }}
         className={`rounded-2xl transition box-3d-press ${
           isCompleted
             ? 'bg-emerald-50/50 dark:bg-emerald-950/25 border-emerald-300 dark:border-emerald-800/60'
             : 'bg-white dark:bg-zinc-900'
-        } p-3.5 space-y-2.5`}
+        } p-3.5 space-y-2.5 touch-pan-y`}
       >
         <div className="flex items-center justify-between gap-3">
           {/* Habit Info & tap to open detail */}
@@ -188,11 +202,12 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
               </div>
             )}
 
-            {/* Manual Completion Checkmark */}
+            {/* Manual Completion Checkmark with Haptic Feedback */}
             {/* Rule: "Reaching the target does not auto-complete the habit. The user must tap the completion checkmark." */}
             <button
               onClick={(e) => {
                 e.stopPropagation();
+                triggerSuccessHaptic();
                 toggleHabitCompletion(habit.id, todayDate);
               }}
               className={`w-9 h-9 rounded-xl flex items-center justify-center transition cursor-pointer ${
@@ -244,7 +259,7 @@ export const HabitsScreen: React.FC<HabitsScreenProps> = ({
             </div>
           </motion.div>
         )}
-      </div>
+      </motion.div>
     );
   };
 

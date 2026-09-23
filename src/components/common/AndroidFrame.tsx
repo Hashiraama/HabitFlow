@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Home, CheckSquare, User, Plus, Wifi, Battery, Sparkles, Target } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useHabitFlow } from '../../context/HabitFlowContext';
+import { triggerLightHaptic } from '../../utils/haptics';
 
 export type ScreenTab = 'home' | 'habits' | 'account';
 
@@ -128,7 +129,10 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
         >
           {/* 1. Home */}
           <button
-            onClick={() => onTabChange('home')}
+            onClick={() => {
+              triggerLightHaptic();
+              onTabChange('home');
+            }}
             className={`relative flex flex-col items-center gap-1 py-1.5 px-4 rounded-2xl transition-all duration-200 active:scale-90 cursor-pointer ${
               currentTab === 'home'
                 ? 'text-emerald-600 dark:text-emerald-400 font-bold'
@@ -150,7 +154,10 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
 
           {/* 2. Habits */}
           <button
-            onClick={() => onTabChange('habits')}
+            onClick={() => {
+              triggerLightHaptic();
+              onTabChange('habits');
+            }}
             className={`relative flex flex-col items-center gap-1 py-1.5 px-4 rounded-2xl transition-all duration-200 active:scale-90 cursor-pointer ${
               currentTab === 'habits'
                 ? 'text-emerald-600 dark:text-emerald-400 font-bold'
@@ -172,7 +179,10 @@ export const AndroidFrame: React.FC<AndroidFrameProps> = ({
 
           {/* 3. Account / Settings */}
           <button
-            onClick={() => onTabChange('account')}
+            onClick={() => {
+              triggerLightHaptic();
+              onTabChange('account');
+            }}
             className={`relative flex flex-col items-center gap-1 py-1.5 px-4 rounded-2xl transition-all duration-200 active:scale-90 cursor-pointer ${
               currentTab === 'account'
                 ? 'text-emerald-600 dark:text-emerald-400 font-bold'

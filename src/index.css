@@ -176,3 +176,17 @@
   transform: translateY(2px) scale(0.96);
   box-shadow: 0 1px 0 0 #059669, 0 2px 4px rgba(16, 185, 129, 0.2);
 }
+
+/* Pure OLED Pitch Black Mode */
+.oled,
+.oled body,
+.oled .dark\:bg-zinc-950,
+.oled .dark\:bg-zinc-900 {
+  background-color: #000000 !important;
+}
+.oled .dark\:bg-zinc-800 {
+  background-color: #0d0d0d !important;
+}
+.oled .dark\:border-zinc-800 {
+  border-color: #1f1f1f !important;
+}

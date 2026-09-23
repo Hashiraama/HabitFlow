@@ -93,7 +93,8 @@ export interface Goal {
 
 export interface UserProfile {
   name: string;
-  theme: 'light' | 'dark';
+  theme: 'light' | 'dark' | 'oled';
+  accentColor?: 'emerald' | 'purple' | 'amber' | 'cyan';
   autoFreeze: boolean;
   notificationsEnabled: boolean;
   xp: number;

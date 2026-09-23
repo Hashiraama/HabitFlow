@@ -23,6 +23,7 @@ import { AndroidifyAvatar } from '../companion/AndroidifyAvatar';
 import { AvatarCustomizerModal } from './AvatarCustomizerModal';
 import { ArchivedItemsModal } from './ArchivedItemsModal';
 import { DeviceInstallModal } from '../common/DeviceInstallModal';
+import { triggerLightHaptic } from '../../utils/haptics';
 import { IOSSwitch } from '../common/IOSSwitch';
 import { formatFriendlyDate } from '../../utils/dateUtils';
 import { getLevelInfo } from '../../utils/xpProgression';
@@ -267,39 +268,59 @@ export const AccountScreen: React.FC = () => {
         </div>
 
         {/* 4. Appearance (Light and Dark modes only, no "follow system") */}
-        {/* Rule: "Support Light and Dark modes only; do not add 'follow system' in V1." */}
+        {/* Theme Mode Selector (Light, Dark, Pure OLED) */}
         <div className="p-4 rounded-3xl bg-white dark:bg-zinc-900 box-3d flex items-center justify-between">
           <div>
             <div className="text-xs font-bold text-zinc-900 dark:text-zinc-100">
               Appearance Theme
             </div>
             <div className="text-[11px] text-zinc-500 dark:text-zinc-400">
-              Light or Dark mode
+              Light, Dark, or Pitch Black OLED
             </div>
           </div>
 
           <div className="flex rounded-xl bg-zinc-100 dark:bg-zinc-800 p-1 gap-1">
             <button
-              onClick={() => setTheme('light')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition ${
+              onClick={() => {
+                triggerLightHaptic();
+                setTheme('light');
+              }}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition ${
                 profile.theme === 'light'
                   ? 'tile-3d-press bg-white text-zinc-900'
                   : 'text-zinc-500 hover:text-zinc-800'
               }`}
             >
-              <Sun size={13} />
+              <Sun size={12} />
               <span>Light</span>
             </button>
             <button
-              onClick={() => setTheme('dark')}
-              className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition ${
+              onClick={() => {
+                triggerLightHaptic();
+                setTheme('dark');
+              }}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition ${
                 profile.theme === 'dark'
                   ? 'tile-3d-press bg-zinc-700 text-white'
                   : 'text-zinc-400 hover:text-zinc-200'
               }`}
             >
-              <Moon size={13} />
+              <Moon size={12} />
               <span>Dark</span>
+            </button>
+            <button
+              onClick={() => {
+                triggerLightHaptic();
+                setTheme('oled');
+              }}
+              className={`px-2.5 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1 transition ${
+                profile.theme === 'oled'
+                  ? 'tile-3d-press bg-black text-emerald-400 border border-emerald-500/50'
+                  : 'text-zinc-400 hover:text-zinc-200'
+              }`}
+            >
+              <Sparkles size={12} className="text-emerald-400" />
+              <span>OLED</span>
             </button>
           </div>
         </div>
